@@ -1,0 +1,6 @@
+framework module Pods_CaseStudyiOSTests {
+  umbrella header "Pods-CaseStudyiOSTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
