@@ -1,6 +1,0 @@
-framework module Pods_CaseStudyiOS_CaseStudyiOSUITests {
-  umbrella header "Pods-CaseStudyiOS-CaseStudyiOSUITests-umbrella.h"
-
-  export *
-  module * { export * }
-}
