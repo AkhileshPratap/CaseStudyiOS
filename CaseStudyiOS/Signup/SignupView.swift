@@ -14,36 +14,43 @@ struct SignupView: View {
         self.viewModel = viewModel
     }
 
+    @State private var path = NavigationPath()
+
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             VStack {
                 Spacer()
-                CSTextField(placeholder: "Email",
+                CSTextField(placeholder: Constant.email,
                                 enteredText: $viewModel.emailId,
                                 showError: $viewModel.isValidEmail,
-                                errorText: "Enter valid email id")
+                                errorText: Validation.emailError)
 
-                CSTextField(placeholder: "Name",
+                CSTextField(placeholder: Constant.name,
                                 enteredText: $viewModel.name,
                                 showError: $viewModel.isValidName,
-                                errorText: "Enter valid name")
+                                errorText: Validation.nameError)
 
-                CSTextField(placeholder: "Password",
+                CSTextField(placeholder: Constant.password,
                                 enteredText: $viewModel.password,
                                 showError: $viewModel.isValidPassword,
-                                errorText: "Enter valid password")
+                            errorText: Validation.passwordError)
 
                 Spacer()
-                CSButton(title: "Create Account") {
+                CSButton(title: Constant.createAccount) {
                     viewModel.validatePage()
-                    print("button pressed")
+                    path.append("News")
                 }
-                
+                .navigationDestination(for: String.self) { view in
+                    if view == "News" {
+                        NewsListView()
+                    }
+                }
             }
             .padding()
             .frame(maxWidth: .infinity)
             .foregroundColor(.white)
-            .navigationTitle("Signup")
+            .navigationTitle(Constant.signup)
+
 
         }
 

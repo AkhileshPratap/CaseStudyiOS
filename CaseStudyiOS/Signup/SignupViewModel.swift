@@ -18,12 +18,16 @@ final class SignupViewModel: ObservableObject {
     @Published var isValidName: Bool = true
     @Published var isValidPassword: Bool = true
 
-        @Published var hasPassedValidation = false
+    @Published var hasPassedValidation = false
 
     private var cancellables = Set<AnyCancellable>()
 
     func validatePage() {
         //
+
+        if emailId.isEmpty && name.isEmpty && password.isEmpty {
+            return
+        }
 
         validateEmailId
             .receive(on: RunLoop.main)
@@ -52,7 +56,7 @@ private extension SignupViewModel {
     var validateEmailId: AnyPublisher<Bool, Never> {
         $emailId
             .map { email in
-                let emailPredicate = NSPredicate(format: "SELF MATCHES %@", "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,100}")
+                let emailPredicate = NSPredicate(format: "SELF MATCHES %@", RegexConstant.email)
                 let value = emailPredicate.evaluate(with: email)
                 return value
             }
@@ -62,7 +66,7 @@ private extension SignupViewModel {
     var validateName: AnyPublisher<Bool, Never> {
         $name
             .map { name in
-                let namePredicate = NSPredicate(format: "SELF MATCHES %@", "[A-Z0-9a-z]{3,}")
+                let namePredicate = NSPredicate(format: "SELF MATCHES %@", RegexConstant.name)
                 let value = namePredicate.evaluate(with: name)
                 return value
             }
@@ -72,7 +76,7 @@ private extension SignupViewModel {
     var validatePassword: AnyPublisher<Bool, Never> {
         $password
             .map { password in
-                let passwordPredicate = NSPredicate(format: "SELF MATCHES %@", "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
+                let passwordPredicate = NSPredicate(format: "SELF MATCHES %@", RegexConstant.password)
                 let value = passwordPredicate.evaluate(with: password)
                 return value
             }
