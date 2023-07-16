@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CSButton: View {
-    var title: LocalizedStringKey
+    var title: String
     var action: (() -> Void)
 
     var body: some View {

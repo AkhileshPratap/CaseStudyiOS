@@ -1,0 +1,18 @@
+/* 
+  Localizable.strings
+  CaseStudyiOS
+
+  Created by AkhileshSingh on 16/07/23.
+  
+*/
+"signup_title" = "Signup";
+"email" = "Email";
+"name" = "Name";
+"password" = "Password";
+
+"create_account" = "Create Account";
+
+// Validation
+"email_validation_error" = "Enter valid password";
+"name_validation_error" = "Enter valid password";
+"password_validation_error" = "Enter valid password";
