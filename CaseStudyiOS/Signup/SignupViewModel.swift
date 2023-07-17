@@ -23,29 +23,27 @@ final class SignupViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     func validatePage() {
-        //
-
         if emailId.isEmpty && name.isEmpty && password.isEmpty {
             return
         }
 
         validateEmailId
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .assign(to: \.isValidEmail, on: self)
             .store(in: &cancellables)
 
         validateName
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .assign(to: \.isValidName, on: self)
             .store(in: &cancellables)
 
         validatePassword
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .assign(to: \.isValidPassword, on: self)
             .store(in: &cancellables)
 
         hasPassedAllValidation
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .assign(to: \.hasPassedValidation, on: self)
             .store(in: &cancellables)
     }

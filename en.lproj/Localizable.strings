@@ -16,3 +16,8 @@
 "email_validation_error" = "Enter valid password";
 "name_validation_error" = "Enter valid password";
 "password_validation_error" = "Enter valid password";
+
+"news_title" = "News";
+"emailed" = "Emailed news";
+"shared" = "Shared news";
+"viewed" = "Viewed news";

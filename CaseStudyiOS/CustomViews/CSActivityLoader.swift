@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ActivityLoader: View {
+struct CSActivityLoader: View {
     var body: some View {
         VStack {
             ProgressView()
@@ -16,8 +16,8 @@ struct ActivityLoader: View {
     }
 }
 
-struct ActivityLoader_Previews: PreviewProvider {
+struct CSActivityLoader_Previews: PreviewProvider {
     static var previews: some View {
-        ActivityLoader()
+        CSActivityLoader()
     }
 }

@@ -9,9 +9,6 @@ import SwiftUI
 import Combine
 
 struct NewsListView: View {
-    //iSNKnWtdEJJgwP1l0dcYFXpz7fwhAS4J
-    //    6sjYeLgyjZRG1uCL
-
     @ObservedObject var viewModel: NewsListViewModel
 
     init(viewModel: NewsListViewModel = NewsListViewModel()) {
@@ -21,45 +18,50 @@ struct NewsListView: View {
     var body: some View {
             Group {
                 if viewModel.loadingStatus == .loading {
-                    ActivityLoader()
+                    CSActivityLoader()
                 } else {
-                    listBody
+                    newsList
                 }
             }
-        .navigationTitle("News")
+            .navigationTitle(Constant.news)
         .onAppear {
         }
     }
 
-    var listBody: some View {
+    var newsList: some View {
         List {
-            Section(header: Text("Emailed")) {
-                ForEach($viewModel.emailedResults) { item in
-                    if let image = item.media.first?.mediaMetadata.first?.url {
-                        NewsRowView(imageName: image, text: item.title)
+            if !$viewModel.emailedResults.isEmpty {
+                Section(header: Text(Constant.emailed)) {
+                    ForEach($viewModel.emailedResults) { item in
+                        if let image = item.media.first?.mediaMetadata.first?.url {
+                            NewsRowView(imageName: image, text: item.title)
+                        }
                     }
                 }
             }
-            Section(header: Text("Shared")) {
-                ForEach($viewModel.sharedResults) { item in
-                    if let image = item.media.first?.mediaMetadata.first?.url {
-                        NewsRowView(imageName: image, text: item.title)
+            if !$viewModel.sharedResults.isEmpty {
+                Section(header: Text(Constant.shared)) {
+                    ForEach($viewModel.sharedResults) { item in
+                        if let image = item.media.first?.mediaMetadata.first?.url {
+                            NewsRowView(imageName: image, text: item.title)
+                        }
                     }
                 }
             }
-            Section(header: Text("Viewed")) {
-                ForEach($viewModel.viewedResults) { item in
-                    if let image = item.media.first?.mediaMetadata.first?.url {
-                        NewsRowView(imageName: image, text: item.title)
+
+            if !$viewModel.viewedResults.isEmpty {
+                Section(header: Text(Constant.viewed)) {
+                    ForEach($viewModel.viewedResults) { item in
+                        if let image = item.media.first?.mediaMetadata.first?.url {
+                            NewsRowView(imageName: image, text: item.title)
+                        }
                     }
                 }
             }
         }
         .listStyle(.insetGrouped)
         .refreshable {
-            print("pulled to referesh")
             viewModel.downloadData()
-            viewModel.loadingStatus = .loading
         }
 
     }

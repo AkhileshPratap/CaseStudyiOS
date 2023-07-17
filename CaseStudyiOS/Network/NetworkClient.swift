@@ -26,6 +26,7 @@ final class NetworkClient: NetworkProtocol {
 
         return URLSession.shared
             .dataTaskPublisher(for: request)
+            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
             .receive(on: DispatchQueue.main)
             .mapError { _ in .unknown }
             .flatMap { data, response -> AnyPublisher<T, APIError> in

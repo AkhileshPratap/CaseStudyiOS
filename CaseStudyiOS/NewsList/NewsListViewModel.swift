@@ -18,12 +18,9 @@ class NewsListViewModel: ObservableObject {
     @Published var emailedResults: [Result] = []
     @Published var sharedResults: [Result] = []
     @Published var viewedResults: [Result] = []
-
     @Published var loadingStatus = LoadingStatus.none
 
     private var cancellables = Set<AnyCancellable>()
-
-
     private var service: NetworkProtocol
 
     init( service: NetworkProtocol = NetworkClient()) {
@@ -32,58 +29,64 @@ class NewsListViewModel: ObservableObject {
     }
 
     func downloadData() {
-        loadingStatus = .loading
         fetchEmailedData()
         fetchSharedData()
         fetchViewedData()
     }
 
     private func fetchEmailedData() {
-        let endPoint = NewsPlacesEnpoint.mostPopularEmailed(key: "iSNKnWtdEJJgwP1l0dcYFXpz7fwhAS4J")
+        let endPoint = NewsPlacesEnpoint.mostPopularEmailed(key: SavedKeys.key)
+        loadingStatus = .loading
         service.request(with: NewsModel.self, endpoint: endPoint)
-            .sink { result in
+            .sink {[weak self] result in
                 switch result {
                 case .finished:
                     break
-                case .failure(let error):
-                    print(error)
+                case .failure:
+                    self?.loadingStatus = .none
                 }
-            } receiveValue: { model in
-                self.emailedResults = model.results
+            } receiveValue: {[weak self] model in
+                self?.emailedResults = model.results
+                self?.loadingStatus = .loaded
             }
             .store(in: &cancellables)
 
     }
 
     private func fetchSharedData() {
-        let endPoint = NewsPlacesEnpoint.mostPopularShared(key: "iSNKnWtdEJJgwP1l0dcYFXpz7fwhAS4J")
+        let endPoint = NewsPlacesEnpoint.mostPopularShared(key: SavedKeys.key)
+        loadingStatus = .loading
         service.request(with: NewsModel.self, endpoint: endPoint)
-            .sink { result in
+            .sink {[weak self] result in
                 switch result {
                 case .finished:
                     break
-                case .failure(let error):
-                    print(error)
+                case .failure:
+                    self?.loadingStatus = .loaded
                 }
-            } receiveValue: { model in
-                self.sharedResults = model.results
+            } receiveValue: {[weak self] model in
+                self?.sharedResults = model.results
+                self?.loadingStatus = .loaded
             }
             .store(in: &cancellables)
 
     }
 
     private func fetchViewedData() {
-        let endPoint = NewsPlacesEnpoint.mostPopularViewed(key: "iSNKnWtdEJJgwP1l0dcYFXpz7fwhAS4J")
+        cancellables.removeAll()
+        let endPoint = NewsPlacesEnpoint.mostPopularViewed(key: SavedKeys.key)
+        loadingStatus = .loading
         service.request(with: NewsModel.self, endpoint: endPoint)
-            .sink { result in
+            .sink {[weak self] result in
                 switch result {
                 case .finished:
                     break
-                case .failure(let error):
-                    print(error)
+                case .failure:
+                    self?.loadingStatus = .loaded
                 }
-            } receiveValue: { model in
-                self.viewedResults = model.results
+            } receiveValue: {[weak self] model in
+                self?.viewedResults = model.results
+                self?.loadingStatus = .loaded
             }
             .store(in: &cancellables)
 

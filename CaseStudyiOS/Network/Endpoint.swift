@@ -32,7 +32,7 @@ extension Endpoint {
     }
 
     var baseURL: String {
-        return "api.nytimes.com"
+        return BaseURL.news
     }
 
     var method: HTTPMethod {

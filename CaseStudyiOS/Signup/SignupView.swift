@@ -51,7 +51,6 @@ struct SignupView: View {
             .foregroundColor(.white)
             .navigationTitle(Constant.signup)
 
-
         }
 
     }
